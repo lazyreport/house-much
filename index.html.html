@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mortgage Leverage Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Mortgage Leverage Calculator</h1>
+    <form id="mortgage-form">
+      <fieldset>
+        <legend>Basic Information</legend>
+        <ol start="1">
+          <li>
+            <label
+              >Property Value:
+              <input type="number" id="property-value" />
+            </label>
+          </li>
+          <li>
+            <label
+              >Current Funds:
+              <input type="number" id="current-funds" />
+            </label>
+          </li>
+          <li>
+            <label
+              >Amount Needed for Mortgage:
+              <output id="amount-needed-mortgage"></output>
+            </label>
+          </li>
+          <li>
+            <label
+              >Mortgage Interest Rate (% per year):
+              <input type="number" step="0.01" id="interest-rate" />
+            </label>
+          </li>
+          <li>
+            <label
+              >Monthly Mortgage Interest Rate:
+              <output id="monthly-interest-rate"></output>
+            </label>
+          </li>
+          <li>
+            <label
+              >Mortgage Duration (years):
+              <input type="number" id="duration-years" />
+            </label>
+          </li>
+          <li>
+            <label
+              >Mortgage Duration (months):
+              <output id="duration-months"></output>
+            </label>
+          </li>
+          <li>
+            <label
+              >Calculated Monthly Mortgage Payment:
+              <output id="monthly-mortgage-payment"></output>
+            </label>
+          </li>
+        </ol>
+      </fieldset>
+      <fieldset>
+        <legend>Income & Payment Ratios</legend>
+        <ol start="9">
+          <li>
+            <label
+              >Choose Income Input:
+              <input
+                type="radio"
+                name="income-type"
+                id="income-monthly-radio"
+                value="monthly"
+                checked
+              />
+              Monthly
+              <input
+                type="radio"
+                name="income-type"
+                id="income-annual-radio"
+                value="annual"
+              />
+              Annual
+            </label>
+          </li>
+          <li>
+            <label
+              >Monthly Income (after taxes):
+              <span id="monthly-income-container"
+                ><input type="number" id="monthly-income"
+              /></span>
+            </label>
+          </li>
+          <li>
+            <label
+              >Annual Income:
+              <span id="annual-income-container"
+                ><input type="number" id="annual-income"
+              /></span>
+            </label>
+          </li>
+          <li>
+            <label
+              >Monthly Mortgage Payment to Monthly Income (%):
+              <span class="tooltip">
+                <output id="payment-to-income-ratio"></output>
+                <span class="tooltiptext">
+                  <b>Color Meaning:</b><br />
+                  <span
+                    style="
+                      color: #fff;
+                      background: rgba(0, 200, 0, 0.5);
+                      padding: 2px 4px;
+                      border-radius: 2px;
+                    "
+                    >Green</span
+                  >: Below 20%<br />
+                  <span
+                    style="
+                      color: #000;
+                      background: rgba(255, 200, 0, 0.5);
+                      padding: 2px 4px;
+                      border-radius: 2px;
+                    "
+                    >Yellow</span
+                  >: 20% to less than 30%<br />
+                  <span
+                    style="
+                      color: #fff;
+                      background: rgba(200, 0, 0, 0.5);
+                      padding: 2px 4px;
+                      border-radius: 2px;
+                    "
+                    >Red</span
+                  >: 30% or more
+                </span>
+              </span>
+            </label>
+          </li>
+        </ol>
+      </fieldset>
+      <fieldset>
+        <legend>Caps & Limits</legend>
+        <ol start="12">
+          <li>
+            <label
+              >DSR Cap Percentage:
+              <input type="number" step="0.01" id="dsr-percentage" />
+            </label>
+          </li>
+          <li>
+            <label
+              >DSR Amount:
+              <output id="dsr-amount"></output>
+            </label>
+          </li>
+          <li>
+            <label
+              >Mortgage Max Cap (LTV %) :
+              <input type="number" step="0.01" id="ltv-percentage" />
+            </label>
+          </li>
+          <li>
+            <label
+              >Mortgage Max Cap Amount:
+              <output id="ltv-amount"></output>
+            </label>
+          </li>
+          <li>
+            <label
+              >Actual Mortgage Cap:
+              <output id="actual-mortgage-cap"></output>
+            </label>
+          </li>
+        </ol>
+      </fieldset>
+      <button type="button" id="save-inputs">Save</button>
+      <button type="button" id="clear-inputs">Clear</button>
+    </form>
+    <script src="main.js" defer></script>
+  </body>
+</html>

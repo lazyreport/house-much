@@ -1,0 +1,45 @@
+/* Styles for Mortgage Leverage Calculator */
+.highlight-green {
+  background-color: rgba(0, 200, 0, 0.5);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: #fff;
+}
+.highlight-red {
+  background-color: rgba(200, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: #fff;
+}
+.highlight-yellow {
+  background-color: rgba(255, 200, 0, 0.5);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: #000;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 240px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -120px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.95em;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
