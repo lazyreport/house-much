@@ -161,23 +161,77 @@ function calculatePaymentToIncomeRatio() {
     monthlyIncome = annualInput.value ? parseFloat(annualInput.value) / 12 : 0;
   }
   const output = document.getElementById("payment-to-income-ratio");
+
+  // Remove old CSS classes
   output.classList.remove(
     "highlight-green",
     "highlight-yellow",
     "highlight-red"
   );
+
+  // Remove Tailwind classes
+  output.classList.remove(
+    "bg-green-100",
+    "border-green-300",
+    "text-green-800",
+    "bg-yellow-100",
+    "border-yellow-300",
+    "text-yellow-800",
+    "bg-red-100",
+    "border-red-300",
+    "text-red-800"
+  );
+
   if (!isNaN(monthlyPayment) && !isNaN(monthlyIncome) && monthlyIncome !== 0) {
     const ratio = (monthlyPayment / monthlyIncome) * 100;
     output.textContent = ratio.toFixed(2) + "%";
+
+    // Apply Tailwind CSS classes based on ratio
     if (ratio < 20) {
-      output.classList.add("highlight-green");
-    } else if (ratio < 30) {
-      output.classList.add("highlight-yellow");
+      output.classList.add(
+        "bg-green-100",
+        "border-green-300",
+        "text-green-800"
+      );
+    } else if (ratio < 35) {
+      output.classList.add(
+        "bg-yellow-100",
+        "border-yellow-300",
+        "text-yellow-800"
+      );
     } else {
-      output.classList.add("highlight-red");
+      output.classList.add("bg-red-100", "border-red-300", "text-red-800");
     }
   } else {
     output.textContent = "";
+  }
+}
+
+function updateIncomeValues() {
+  const monthlyRadio = document.getElementById("income-monthly-radio");
+  const monthlyInput = document.getElementById("monthly-income");
+  const annualInput = document.getElementById("annual-income");
+  const monthlyOutput = document.getElementById("monthly-income");
+  const annualOutput = document.getElementById("annual-income");
+
+  if (monthlyRadio.checked) {
+    // Monthly is input, annual is output
+    if (monthlyInput && annualOutput) {
+      annualOutput.textContent = monthlyInput.value
+        ? formatNumberWithCommas(
+            (parseFloat(monthlyInput.value) * 12).toFixed(0)
+          )
+        : "";
+    }
+  } else {
+    // Annual is input, monthly is output
+    if (annualInput && monthlyOutput) {
+      monthlyOutput.textContent = annualInput.value
+        ? formatNumberWithCommas(
+            (parseFloat(annualInput.value) / 12).toFixed(0)
+          )
+        : "";
+    }
   }
 }
 
@@ -186,46 +240,64 @@ function updateIncomeInputs() {
   const annualRadio = document.getElementById("income-annual-radio");
   const monthlyContainer = document.getElementById("monthly-income-container");
   const annualContainer = document.getElementById("annual-income-container");
+
+  // Store current values and focus state
+  const monthlyValue = document.getElementById("monthly-income")?.value || "";
+  const annualValue = document.getElementById("annual-income")?.value || "";
+  const activeElement = document.activeElement;
+  const isMonthlyFocused = activeElement?.id === "monthly-income";
+  const isAnnualFocused = activeElement?.id === "annual-income";
+
   if (monthlyRadio.checked) {
     // Monthly is input, annual is output
-    monthlyContainer.innerHTML = '<input type="number" id="monthly-income" />';
-    annualContainer.innerHTML = '<output id="annual-income"></output>';
-  } else {
-    // Annual is input, monthly is output
-    monthlyContainer.innerHTML = '<output id="monthly-income"></output>';
-    annualContainer.innerHTML = '<input type="number" id="annual-income" />';
-  }
-  // Restore values and listeners
-  if (monthlyRadio.checked) {
+    monthlyContainer.innerHTML =
+      '<input type="number" id="monthly-income" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Enter monthly income" />';
+    annualContainer.innerHTML =
+      '<output id="annual-income" class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"></output>';
+
     const monthlyInput = document.getElementById("monthly-income");
     const annualOutput = document.getElementById("annual-income");
-    monthlyInput.value = window._monthlyIncomeValue || "";
-    annualOutput.textContent = monthlyInput.value
-      ? formatNumberWithCommas((parseFloat(monthlyInput.value) * 12).toFixed(0))
+
+    monthlyInput.value = monthlyValue;
+    annualOutput.textContent = monthlyValue
+      ? formatNumberWithCommas((parseFloat(monthlyValue) * 12).toFixed(0))
       : "";
+
+    if (isMonthlyFocused) {
+      monthlyInput.focus();
+      const length = monthlyInput.value.length;
+      monthlyInput.setSelectionRange(length, length);
+    }
+
     monthlyInput.addEventListener("input", function () {
       window._monthlyIncomeValue = monthlyInput.value;
-      annualOutput.textContent = monthlyInput.value
-        ? formatNumberWithCommas(
-            (parseFloat(monthlyInput.value) * 12).toFixed(0)
-          )
-        : "";
+      updateIncomeValues();
       updateAllOutputs();
     });
   } else {
+    // Annual is input, monthly is output
+    monthlyContainer.innerHTML =
+      '<output id="monthly-income" class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"></output>';
+    annualContainer.innerHTML =
+      '<input type="number" id="annual-income" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Enter annual income" />';
+
     const monthlyOutput = document.getElementById("monthly-income");
     const annualInput = document.getElementById("annual-income");
-    annualInput.value = window._annualIncomeValue || "";
-    monthlyOutput.textContent = annualInput.value
-      ? formatNumberWithCommas((parseFloat(annualInput.value) / 12).toFixed(0))
+
+    annualInput.value = annualValue;
+    monthlyOutput.textContent = annualValue
+      ? formatNumberWithCommas((parseFloat(annualValue) / 12).toFixed(0))
       : "";
+
+    if (isAnnualFocused) {
+      annualInput.focus();
+      const length = annualInput.value.length;
+      annualInput.setSelectionRange(length, length);
+    }
+
     annualInput.addEventListener("input", function () {
       window._annualIncomeValue = annualInput.value;
-      monthlyOutput.textContent = annualInput.value
-        ? formatNumberWithCommas(
-            (parseFloat(annualInput.value) / 12).toFixed(0)
-          )
-        : "";
+      updateIncomeValues();
       updateAllOutputs();
     });
   }
@@ -320,12 +392,43 @@ function updateAllOutputs() {
   calculateAmountNeededForMortgage();
   calculateMortgageDurationMonths();
   calculateMonthlyInterestRate();
-  updateIncomeInputs();
+  updateIncomeValues();
   calculateLtvAmount();
   calculateDsrAmount();
   calculateActualMortgageCap();
   calculateMonthlyMortgagePayment();
   calculatePaymentToIncomeRatio();
+}
+
+function calculatePropertyValueFromRatio(desiredRatio) {
+  const monthlyIncome = document.getElementById("income-monthly-radio").checked
+    ? parseFloat(document.getElementById("monthly-income").value)
+    : parseFloat(document.getElementById("annual-income").value) / 12;
+  const interestRate =
+    parseFloat(document.getElementById("interest-rate").value) / 100 / 12;
+  const durationMonths = parseInt(
+    document.getElementById("duration-months").textContent,
+    10
+  );
+  const currentFunds =
+    parseFloat(document.getElementById("current-funds").value) || 0;
+
+  if (!isNaN(monthlyIncome) && !isNaN(interestRate) && !isNaN(durationMonths)) {
+    const monthlyPayment = (monthlyIncome * desiredRatio) / 100;
+    let propertyValue;
+
+    if (interestRate === 0) {
+      propertyValue = monthlyPayment * durationMonths + currentFunds;
+    } else {
+      const loanAmount =
+        (monthlyPayment * (1 - Math.pow(1 + interestRate, -durationMonths))) /
+        interestRate;
+      propertyValue = loanAmount + currentFunds;
+    }
+
+    return Math.max(0, propertyValue);
+  }
+  return 0;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -360,7 +463,38 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById(id).addEventListener("input", updateAllOutputs);
   });
 
+  document
+    .getElementById("ratio-slider")
+    .addEventListener("input", function () {
+      const desiredRatio = parseFloat(this.value);
+      const propertyValue = calculatePropertyValueFromRatio(desiredRatio);
+      document.getElementById("property-value").value =
+        Math.round(propertyValue);
+      document.getElementById("payment-to-income-ratio").textContent =
+        desiredRatio.toFixed(1) + "%";
+
+      // Update slider value display
+      document.getElementById("slider-value").textContent =
+        desiredRatio.toFixed(1) + "%";
+
+      // Update slider gradient fill
+      const percentage = (desiredRatio / 50) * 100;
+      const slider = this;
+      slider.style.background = `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${percentage}%, #e5e7eb ${percentage}%, #e5e7eb 100%)`;
+
+      updateAllOutputs();
+    });
+
   // Initial calculation on page load
   loadInputsFromLocalStorage();
+
+  // Initialize slider gradient and value display
+  const slider = document.getElementById("ratio-slider");
+  const initialValue = parseFloat(slider.value);
+  const percentage = (initialValue / 50) * 100;
+  slider.style.background = `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${percentage}%, #e5e7eb ${percentage}%, #e5e7eb 100%)`;
+  document.getElementById("slider-value").textContent =
+    initialValue.toFixed(1) + "%";
+
   updateAllOutputs();
 });
