@@ -129,58 +129,105 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-4">
+              <!-- 주택 가격 (KB시세) -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Property Value
+                  주택 가격 (KB시세)
                 </label>
-                <input
-                  type="number"
-                  id="property-value"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter property value"
-                />
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="property-value"
+                    class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="Enter property value"
+                  />
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >원</span
+                  >
+                </div>
+              </div>
+              <!-- 현재 자산 -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  현재 자산
+                </label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="current-funds"
+                    class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="Enter current funds"
+                  />
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >원</span
+                  >
+                </div>
               </div>
 
+              <!-- 대출 금액 -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Current Funds
+                  대출 금액
                 </label>
-                <input
-                  type="number"
-                  id="current-funds"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter current funds"
-                />
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Amount Needed for Mortgage
-                </label>
-                <output
-                  id="amount-needed-mortgage"
-                  class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
-                ></output>
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Mortgage Interest Rate (% per year)
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="interest-rate"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter interest rate"
-                />
+                <div class="relative">
+                  <output
+                    id="amount-needed-mortgage"
+                    class="block w-full px-3 py-2 pr-10 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
+                  ></output>
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >원</span
+                  >
+                </div>
               </div>
             </div>
 
             <div class="space-y-4">
+              <!-- 연 대출 금리 -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Monthly Mortgage Interest Rate
+                  연 대출 금리
+                </label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    step="0.01"
+                    id="interest-rate"
+                    class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="Enter interest rate"
+                  />
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >%</span
+                  >
+                </div>
+              </div>
+
+              <!-- 대출 기간 (년) -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  대출 기간 (년)
+                </label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="duration-years"
+                    class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="Enter duration in years"
+                  />
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >년</span
+                  >
+                </div>
+              </div>
+
+              <!-- 월 대출 금리 -->
+              <div class="hidden">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  월 대출 금리
                 </label>
                 <output
                   id="monthly-interest-rate"
@@ -188,19 +235,8 @@
                 ></output>
               </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Mortgage Duration (years)
-                </label>
-                <input
-                  type="number"
-                  id="duration-years"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter duration in years"
-                />
-              </div>
-
-              <div>
+              <!-- 대출 기간 (개월) -->
+              <div class="hidden">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   Mortgage Duration (months)
                 </label>
@@ -210,14 +246,21 @@
                 ></output>
               </div>
 
+              <!-- 월 상환금 -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Calculated Monthly Mortgage Payment
+                  월 상환금
                 </label>
-                <output
-                  id="monthly-mortgage-payment"
-                  class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
-                ></output>
+                <div class="relative">
+                  <output
+                    id="monthly-mortgage-payment"
+                    class="block w-full px-3 py-2 pr-10 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
+                  ></output>
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >원</span
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -247,7 +290,7 @@
           <div class="space-y-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-3">
-                Choose Income Input
+                수익 입력 방식
               </label>
               <div class="flex space-x-6">
                 <label class="flex items-center">
@@ -259,7 +302,7 @@
                     checked
                     class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500"
                   />
-                  <span class="ml-2 text-sm text-gray-700">Monthly</span>
+                  <span class="ml-2 text-sm text-gray-700">월 수익</span>
                 </label>
                 <label class="flex items-center">
                   <input
@@ -269,7 +312,7 @@
                     value="annual"
                     class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500"
                   />
-                  <span class="ml-2 text-sm text-gray-700">Annual</span>
+                  <span class="ml-2 text-sm text-gray-700">연 수익</span>
                 </label>
               </div>
             </div>
@@ -277,36 +320,34 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Monthly Income (after taxes)
+                  월 수익 (세후)
                 </label>
-                <span id="monthly-income-container">
-                  <input
-                    type="number"
-                    id="monthly-income"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Enter monthly income"
-                  />
-                </span>
+                <div class="relative">
+                  <span id="monthly-income-container"></span>
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >원</span
+                  >
+                </div>
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Annual Income
+                  연 수익 (세후)
                 </label>
-                <span id="annual-income-container">
-                  <input
-                    type="number"
-                    id="annual-income"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Enter annual income"
-                  />
-                </span>
+                <div class="relative">
+                  <span id="annual-income-container"></span>
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >원</span
+                  >
+                </div>
               </div>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">
-                Monthly Mortgage Payment to Monthly Income (%)
+                DTI (총부채상환비율)
               </label>
               <div class="relative">
                 <output
@@ -314,45 +355,39 @@
                   class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium mb-2"
                 ></output>
                 <div class="flex items-center space-x-4 mb-2">
-                  <input
-                    type="range"
-                    id="ratio-slider"
-                    min="0"
-                    max="50"
-                    step="0.1"
-                    value="30"
-                    class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                  />
+                  <div class="relative flex-1">
+                    <input
+                      type="range"
+                      id="ratio-slider"
+                      min="0"
+                      max="50"
+                      step="0.1"
+                      value="30"
+                      class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                    />
+                    <div
+                      class="absolute left-0 right-0 -bottom-5 flex justify-between text-xs text-gray-500 pointer-events-none select-none w-full"
+                    >
+                      <span style="left: 0%">0%</span>
+                      <span style="left: 40%">20%</span>
+                      <span style="left: 70%">35%</span>
+                      <span style="left: 100%">50%</span>
+                    </div>
+                  </div>
                   <span
                     id="slider-value"
                     class="text-lg font-semibold text-primary-600 min-w-[60px] text-center"
                     >30.0%</span
                   >
                 </div>
-                <div class="relative mt-1">
-                  <div class="flex justify-between text-xs text-gray-500">
-                    <span class="absolute left-0 transform -translate-x-1/2"
-                      >0%</span
-                    >
-                    <span class="absolute left-[40%] transform -translate-x-1/2"
-                      >20%</span
-                    >
-                    <span class="absolute left-[70%] transform -translate-x-1/2"
-                      >35%</span
-                    >
-                    <span class="absolute right-0 transform translate-x-1/2"
-                      >50%</span
-                    >
-                  </div>
-                </div>
               </div>
 
               <!-- Tooltip -->
               <div
-                class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+                class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg"
               >
                 <h4 class="text-sm font-medium text-blue-900 mb-2">
-                  Payment to Income Ratio Guidelines:
+                  DTI 가이드라인
                 </h4>
                 <div class="space-y-2 text-sm">
                   <div class="flex items-center">
@@ -384,7 +419,7 @@
           </div>
         </div>
 
-        <!-- Caps & Limits Section -->
+        <!-- 대출 한도 -->
         <div class="bg-white rounded-lg shadow-md p-6">
           <h2
             class="text-xl font-semibold text-gray-900 mb-4 flex items-center"
@@ -402,68 +437,142 @@
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>
             </svg>
-            Caps & Limits
+            대출 한도
           </h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  DSR Cap Percentage
+                  DSR (총부채원리금상환비율)
                 </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="dsr-percentage"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter DSR percentage"
-                />
+                <div id="dsr-radio-group" class="flex space-x-4">
+                  <label class="flex items-center">
+                    <input
+                      type="radio"
+                      name="dsr-percentage-radio"
+                      value="40"
+                      class="text-primary-600 focus:ring-primary-500"
+                    />
+                    <span class="ml-2"
+                      >40%
+                      <span class="text-xs text-gray-500">은행권</span></span
+                    >
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="radio"
+                      name="dsr-percentage-radio"
+                      value="50"
+                      class="text-primary-600 focus:ring-primary-500"
+                    />
+                    <span class="ml-2"
+                      >50%
+                      <span class="text-xs text-gray-500">비은행권</span></span
+                    >
+                  </label>
+                </div>
+                <input type="hidden" id="dsr-percentage" />
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  DSR Amount
+                  DSR 한도 금액
                 </label>
-                <output
-                  id="dsr-amount"
-                  class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
-                ></output>
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Mortgage Max Cap (LTV %)
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="ltv-percentage"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter LTV percentage"
-                />
+                <div class="relative">
+                  <output
+                    id="dsr-amount"
+                    class="block w-full px-3 py-2 pr-10 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
+                  ></output>
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >원</span
+                  >
+                </div>
               </div>
             </div>
 
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Mortgage Max Cap Amount
+                  LTV (주택담보대출비율)
                 </label>
-                <output
-                  id="ltv-amount"
-                  class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
-                ></output>
+                <div id="ltv-radio-group" class="flex space-x-4">
+                  <label class="flex items-center">
+                    <input
+                      type="radio"
+                      name="ltv-percentage-radio"
+                      value="50"
+                      class="text-primary-600 focus:ring-primary-500"
+                    />
+                    <span class="ml-2"
+                      >50%
+                      <span class="text-xs text-gray-500"
+                        >투기과열지구</span
+                      ></span
+                    >
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="radio"
+                      name="ltv-percentage-radio"
+                      value="70"
+                      class="text-primary-600 focus:ring-primary-500"
+                    />
+                    <span class="ml-2"
+                      >70%
+                      <span class="text-xs text-gray-500"
+                        >비규제지역</span
+                      ></span
+                    >
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="radio"
+                      name="ltv-percentage-radio"
+                      value="80"
+                      class="text-primary-600 focus:ring-primary-500"
+                    />
+                    <span class="ml-2"
+                      >80%
+                      <span class="text-xs text-gray-500"
+                        >생애최초구입</span
+                      ></span
+                    >
+                  </label>
+                </div>
+                <input type="hidden" id="ltv-percentage" />
               </div>
-
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Actual Mortgage Cap
+                  LTV 한도 금액
                 </label>
-                <output
-                  id="actual-mortgage-cap"
-                  class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
-                ></output>
+                <div class="relative">
+                  <output
+                    id="ltv-amount"
+                    class="block w-full px-3 py-2 pr-10 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
+                  ></output>
+                  <span
+                    class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                    >원</span
+                  >
+                </div>
               </div>
+            </div>
+          </div>
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2 mt-4">
+              실제 대출 한도 (DSR, LTV 중 낮은 값)
+            </label>
+            <div class="relative">
+              <output
+                id="actual-mortgage-cap"
+                class="block w-full px-3 py-2 pr-10 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"
+              ></output>
+              <span
+                class="absolute right-3 inset-y-0 flex items-center text-gray-500 pointer-events-none select-none"
+                >원</span
+              >
             </div>
           </div>
         </div>

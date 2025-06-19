@@ -2,6 +2,30 @@ function formatNumberWithCommas(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function formatInputValue(input) {
+  // Remove all non-digit characters except decimal point
+  let value = input.value.replace(/[^\d.]/g, "");
+
+  // Ensure only one decimal point
+  const parts = value.split(".");
+  if (parts.length > 2) {
+    value = parts[0] + "." + parts.slice(1).join("");
+  }
+
+  // Format the whole number part with commas
+  if (parts.length > 0) {
+    const wholePart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    value = parts.length > 1 ? wholePart + "." + parts[1] : wholePart;
+  }
+
+  return value;
+}
+
+function parseFormattedNumber(formattedValue) {
+  // Remove commas and convert to number
+  return parseFloat(formattedValue.replace(/,/g, "")) || 0;
+}
+
 function calculateMortgageDurationMonths() {
   const yearsInput = document.getElementById("duration-years");
   const monthsOutput = document.getElementById("duration-months");
@@ -17,8 +41,8 @@ function calculateAmountNeededForMortgage() {
   const propertyValueInput = document.getElementById("property-value");
   const currentFundsInput = document.getElementById("current-funds");
   const output = document.getElementById("amount-needed-mortgage");
-  const propertyValue = parseFloat(propertyValueInput.value);
-  const currentFunds = parseFloat(currentFundsInput.value);
+  const propertyValue = parseFormattedNumber(propertyValueInput.value);
+  const currentFunds = parseFormattedNumber(currentFundsInput.value);
   if (!isNaN(propertyValue) && !isNaN(currentFunds)) {
     const needed = propertyValue - currentFunds;
     output.textContent = formatNumberWithCommas(needed);
@@ -32,7 +56,7 @@ function calculateMonthlyInterestRate() {
   const monthlyInterestRateOutput = document.getElementById(
     "monthly-interest-rate"
   );
-  const interestRate = parseFloat(interestRateInput.value);
+  const interestRate = parseFormattedNumber(interestRateInput.value);
   if (!isNaN(interestRate)) {
     const monthlyRate = interestRate / 100 / 12;
     monthlyInterestRateOutput.textContent = monthlyRate.toFixed(6);
@@ -42,10 +66,10 @@ function calculateMonthlyInterestRate() {
 }
 
 function calculateLtvAmount() {
-  const propertyValue = parseFloat(
+  const propertyValue = parseFormattedNumber(
     document.getElementById("property-value").value
   );
-  const ltvPercentage = parseFloat(
+  const ltvPercentage = parseFormattedNumber(
     document.getElementById("ltv-percentage").value
   );
   const output = document.getElementById("ltv-amount");
@@ -58,7 +82,7 @@ function calculateLtvAmount() {
 }
 
 function calculateDsrAmount() {
-  const interestRate = parseFloat(
+  const interestRate = parseFormattedNumber(
     document.getElementById("interest-rate").value
   );
   const durationYears = parseInt(
@@ -68,11 +92,11 @@ function calculateDsrAmount() {
   let annualIncome;
   const annualIncomeElem = document.getElementById("annual-income");
   if (annualIncomeElem.tagName === "INPUT") {
-    annualIncome = parseFloat(annualIncomeElem.value);
+    annualIncome = parseFormattedNumber(annualIncomeElem.value);
   } else {
     annualIncome = parseFloat(annualIncomeElem.textContent.replace(/,/g, ""));
   }
-  const dsrPercentage = parseFloat(
+  const dsrPercentage = parseFormattedNumber(
     document.getElementById("dsr-percentage").value
   );
   const output = document.getElementById("dsr-amount");
@@ -121,7 +145,7 @@ function calculateMonthlyMortgagePayment() {
     document.getElementById("duration-months").textContent,
     10
   );
-  const amountNeeded = parseFloat(
+  const amountNeeded = parseFormattedNumber(
     document
       .getElementById("amount-needed-mortgage")
       .textContent.replace(/,/g, "")
@@ -155,10 +179,14 @@ function calculatePaymentToIncomeRatio() {
   );
   let monthlyIncome;
   if (document.getElementById("income-monthly-radio").checked) {
-    monthlyIncome = parseFloat(document.getElementById("monthly-income").value);
+    monthlyIncome = parseFormattedNumber(
+      document.getElementById("monthly-income").value
+    );
   } else {
     const annualInput = document.getElementById("annual-income");
-    monthlyIncome = annualInput.value ? parseFloat(annualInput.value) / 12 : 0;
+    monthlyIncome = annualInput.value
+      ? parseFormattedNumber(annualInput.value) / 12
+      : 0;
   }
   const output = document.getElementById("payment-to-income-ratio");
 
@@ -219,7 +247,7 @@ function updateIncomeValues() {
     if (monthlyInput && annualOutput) {
       annualOutput.textContent = monthlyInput.value
         ? formatNumberWithCommas(
-            (parseFloat(monthlyInput.value) * 12).toFixed(0)
+            (parseFormattedNumber(monthlyInput.value) * 12).toFixed(0)
           )
         : "";
     }
@@ -228,7 +256,7 @@ function updateIncomeValues() {
     if (annualInput && monthlyOutput) {
       monthlyOutput.textContent = annualInput.value
         ? formatNumberWithCommas(
-            (parseFloat(annualInput.value) / 12).toFixed(0)
+            (parseFormattedNumber(annualInput.value) / 12).toFixed(0)
           )
         : "";
     }
@@ -251,7 +279,7 @@ function updateIncomeInputs() {
   if (monthlyRadio.checked) {
     // Monthly is input, annual is output
     monthlyContainer.innerHTML =
-      '<input type="number" id="monthly-income" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Enter monthly income" />';
+      '<input type="text" id="monthly-income" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Enter monthly income" />';
     annualContainer.innerHTML =
       '<output id="annual-income" class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"></output>';
 
@@ -260,7 +288,9 @@ function updateIncomeInputs() {
 
     monthlyInput.value = monthlyValue;
     annualOutput.textContent = monthlyValue
-      ? formatNumberWithCommas((parseFloat(monthlyValue) * 12).toFixed(0))
+      ? formatNumberWithCommas(
+          (parseFormattedNumber(monthlyValue) * 12).toFixed(0)
+        )
       : "";
 
     if (isMonthlyFocused) {
@@ -270,7 +300,8 @@ function updateIncomeInputs() {
     }
 
     monthlyInput.addEventListener("input", function () {
-      window._monthlyIncomeValue = monthlyInput.value;
+      this.value = formatInputValue(this);
+      window._monthlyIncomeValue = this.value;
       updateIncomeValues();
       updateAllOutputs();
     });
@@ -279,14 +310,16 @@ function updateIncomeInputs() {
     monthlyContainer.innerHTML =
       '<output id="monthly-income" class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"></output>';
     annualContainer.innerHTML =
-      '<input type="number" id="annual-income" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Enter annual income" />';
+      '<input type="text" id="annual-income" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Enter annual income" />';
 
     const monthlyOutput = document.getElementById("monthly-income");
     const annualInput = document.getElementById("annual-income");
 
     annualInput.value = annualValue;
     monthlyOutput.textContent = annualValue
-      ? formatNumberWithCommas((parseFloat(annualValue) / 12).toFixed(0))
+      ? formatNumberWithCommas(
+          (parseFormattedNumber(annualValue) / 12).toFixed(0)
+        )
       : "";
 
     if (isAnnualFocused) {
@@ -296,7 +329,8 @@ function updateIncomeInputs() {
     }
 
     annualInput.addEventListener("input", function () {
-      window._annualIncomeValue = annualInput.value;
+      this.value = formatInputValue(this);
+      window._annualIncomeValue = this.value;
       updateIncomeValues();
       updateAllOutputs();
     });
@@ -402,16 +436,18 @@ function updateAllOutputs() {
 
 function calculatePropertyValueFromRatio(desiredRatio) {
   const monthlyIncome = document.getElementById("income-monthly-radio").checked
-    ? parseFloat(document.getElementById("monthly-income").value)
-    : parseFloat(document.getElementById("annual-income").value) / 12;
+    ? parseFormattedNumber(document.getElementById("monthly-income").value)
+    : parseFormattedNumber(document.getElementById("annual-income").value) / 12;
   const interestRate =
-    parseFloat(document.getElementById("interest-rate").value) / 100 / 12;
+    parseFormattedNumber(document.getElementById("interest-rate").value) /
+    100 /
+    12;
   const durationMonths = parseInt(
     document.getElementById("duration-months").textContent,
     10
   );
   const currentFunds =
-    parseFloat(document.getElementById("current-funds").value) || 0;
+    parseFormattedNumber(document.getElementById("current-funds").value) || 0;
 
   if (!isNaN(monthlyIncome) && !isNaN(interestRate) && !isNaN(durationMonths)) {
     const monthlyPayment = (monthlyIncome * desiredRatio) / 100;
@@ -460,7 +496,11 @@ document.addEventListener("DOMContentLoaded", function () {
     "ltv-percentage",
     "dsr-percentage",
   ].forEach(function (id) {
-    document.getElementById(id).addEventListener("input", updateAllOutputs);
+    const element = document.getElementById(id);
+    element.addEventListener("input", function () {
+      this.value = formatInputValue(this);
+      updateAllOutputs();
+    });
   });
 
   document
@@ -468,8 +508,10 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("input", function () {
       const desiredRatio = parseFloat(this.value);
       const propertyValue = calculatePropertyValueFromRatio(desiredRatio);
-      document.getElementById("property-value").value =
-        Math.round(propertyValue);
+      const propertyValueInput = document.getElementById("property-value");
+      propertyValueInput.value = formatNumberWithCommas(
+        Math.round(propertyValue)
+      );
       document.getElementById("payment-to-income-ratio").textContent =
         desiredRatio.toFixed(1) + "%";
 
@@ -495,6 +537,59 @@ document.addEventListener("DOMContentLoaded", function () {
   slider.style.background = `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${percentage}%, #e5e7eb ${percentage}%, #e5e7eb 100%)`;
   document.getElementById("slider-value").textContent =
     initialValue.toFixed(1) + "%";
+
+  // Initialize income inputs with proper formatting
+  updateIncomeInputs();
+
+  // LTV radio buttons logic
+  const ltvRadios = document.getElementsByName("ltv-percentage-radio");
+  const ltvHidden = document.getElementById("ltv-percentage");
+  function setLtvFromRadio() {
+    for (const radio of ltvRadios) {
+      if (radio.checked) {
+        ltvHidden.value = radio.value;
+        break;
+      }
+    }
+    updateAllOutputs();
+  }
+  for (const radio of ltvRadios) {
+    radio.addEventListener("change", setLtvFromRadio);
+  }
+  // Set default (70%) if none selected
+  let anyChecked = false;
+  for (const radio of ltvRadios) {
+    if (radio.checked) anyChecked = true;
+  }
+  if (!anyChecked) {
+    ltvRadios[1].checked = true; // 70% default
+    ltvHidden.value = ltvRadios[1].value;
+  }
+
+  // DSR radio buttons logic
+  const dsrRadios = document.getElementsByName("dsr-percentage-radio");
+  const dsrHidden = document.getElementById("dsr-percentage");
+  function setDsrFromRadio() {
+    for (const radio of dsrRadios) {
+      if (radio.checked) {
+        dsrHidden.value = radio.value;
+        break;
+      }
+    }
+    updateAllOutputs();
+  }
+  for (const radio of dsrRadios) {
+    radio.addEventListener("change", setDsrFromRadio);
+  }
+  // Set default (40%) if none selected
+  let dsrAnyChecked = false;
+  for (const radio of dsrRadios) {
+    if (radio.checked) dsrAnyChecked = true;
+  }
+  if (!dsrAnyChecked) {
+    dsrRadios[0].checked = true; // 40% default
+    dsrHidden.value = dsrRadios[0].value;
+  }
 
   updateAllOutputs();
 });
