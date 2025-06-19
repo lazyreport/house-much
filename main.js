@@ -41,6 +41,10 @@ function calculateAmountNeededForMortgage() {
   const propertyValueInput = document.getElementById("property-value");
   const currentFundsInput = document.getElementById("current-funds");
   const output = document.getElementById("amount-needed-mortgage");
+  if (!propertyValueInput.value || !currentFundsInput.value) {
+    output.textContent = "";
+    return;
+  }
   const propertyValue = parseFormattedNumber(propertyValueInput.value);
   const currentFunds = parseFormattedNumber(currentFundsInput.value);
   if (!isNaN(propertyValue) && !isNaN(currentFunds)) {
@@ -66,13 +70,15 @@ function calculateMonthlyInterestRate() {
 }
 
 function calculateLtvAmount() {
-  const propertyValue = parseFormattedNumber(
-    document.getElementById("property-value").value
-  );
-  const ltvPercentage = parseFormattedNumber(
-    document.getElementById("ltv-percentage").value
-  );
+  const propertyValueInput = document.getElementById("property-value");
+  const ltvPercentageInput = document.getElementById("ltv-percentage");
   const output = document.getElementById("ltv-amount");
+  if (!propertyValueInput.value || !ltvPercentageInput.value) {
+    output.textContent = "";
+    return;
+  }
+  const propertyValue = parseFormattedNumber(propertyValueInput.value);
+  const ltvPercentage = parseFormattedNumber(ltvPercentageInput.value);
   if (!isNaN(propertyValue) && !isNaN(ltvPercentage)) {
     const ltvAmount = propertyValue * (ltvPercentage / 100);
     output.textContent = formatNumberWithCommas(ltvAmount.toFixed(0));
@@ -279,9 +285,9 @@ function updateIncomeInputs() {
   if (monthlyRadio.checked) {
     // Monthly is input, annual is output
     monthlyContainer.innerHTML =
-      '<input type="text" id="monthly-income" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Enter monthly income" />';
+      '<input type="text" id="monthly-income" class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" aria-label="월 수익 (세후)" />';
     annualContainer.innerHTML =
-      '<output id="annual-income" class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"></output>';
+      '<output id="annual-income" class="block w-full h-10 px-3 py-2 pr-10 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"></output>';
 
     const monthlyInput = document.getElementById("monthly-income");
     const annualOutput = document.getElementById("annual-income");
@@ -308,9 +314,9 @@ function updateIncomeInputs() {
   } else {
     // Annual is input, monthly is output
     monthlyContainer.innerHTML =
-      '<output id="monthly-income" class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"></output>';
+      '<output id="monthly-income" class="block w-full h-10 px-3 py-2 pr-10 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium"></output>';
     annualContainer.innerHTML =
-      '<input type="text" id="annual-income" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Enter annual income" />';
+      '<input type="text" id="annual-income" class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" aria-label="연 수익 (세후)" />';
 
     const monthlyOutput = document.getElementById("monthly-income");
     const annualInput = document.getElementById("annual-income");
